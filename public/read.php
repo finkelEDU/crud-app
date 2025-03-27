@@ -35,7 +35,6 @@
 				<th>Email Address</th>
 				<th>Age</th>
 				<th>Location</th>
-				<th>Date</th>
 			</tr>
 		</thead>
 		
@@ -49,7 +48,6 @@
 			<td><?php echo escape($row["email"]); ?></td>
 			<td><?php echo escape($row["age"]); ?></td>
 			<td><?php echo escape($row["location"]); ?></td>
-			<td><?php echo escape($row["date"]); ?></td>
 		</tr>
 		
 		<?php } ?>

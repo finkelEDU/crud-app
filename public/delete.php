@@ -1,13 +1,31 @@
 <?php
-	try{
-		require "../common.php";
-		require_once '../src/DBconnect.php';
-
-		$sql = "SELECT * FROM users";
+	require "../common.php";
 	
+	if(isset($_GET["id"])){
+		try{
+			require_once "../src/DBconnect.php";
+			
+			$id = $_GET["id"];
+			$sql = "DELETE FROM users WHERE id = :id";
+			
+			$statement = $connection->prepare($sql);
+			$statement->bindValue(":id", $id);
+			$statement->execute();
+			
+			$success = "User " . $id . " successfully deleted!";
+		}catch(PDOException $error){
+			echo $sql . "<br>" . $error->getMessage();
+		}
+	}
+	
+	try{
+		require_once "../src/DBconnect.php";
+		
+		$sql = "SELECT * FROM users";
+		
 		$statement = $connection->prepare($sql);
 		$statement->execute();
-	
+		
 		$result = $statement->fetchAll();
 	}catch(PDOException $error){
 		echo $sql . "<br>" . $error->getMessage();
@@ -16,7 +34,9 @@
 
 <?php require "templates/header.php"; ?>
 
-<h2>Update Users</h2>
+<h2>Delete Users</h2>
+
+<?php if($success) echo $success; ?>
 
 <table>
 	<thead>
@@ -27,7 +47,7 @@
 			<th>Email Address</th>
 			<th>Age</th>
 			<th>Location</th>
-			<th>Edit</th>
+			<th>Delete</th>
 		</tr>
 	</thead>
 	
@@ -41,7 +61,8 @@
 				<td><?php echo escape($row["age"]); ?></td>
 				<td><?php echo escape($row["location"]); ?></td>
 				
-				<td><a href="update-single.php?id=<?php echo escape($row["id"]); ?>">Edit</a></td>
+				
+				<td><a href="delete.php?id=<?php echo escape($row["id"]); ?> ">Delete</a></td>
 			</tr>
 			
 		<?php endforeach; ?>
